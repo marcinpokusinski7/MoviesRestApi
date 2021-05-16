@@ -37,11 +37,6 @@ public class MovieController {
 
     @PatchMapping("/film/{id}/like")
     public ResponseEntity<?> addLike(@RequestBody Movie movieLike, @PathVariable Integer id) {
-        try {
-            movieService.giveLike(movieLike, id);
-            return ResponseEntity.ok("Like added");
-        } catch (MovieNotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+        return movieService.giveLike(movieLike,id);
     }
 }

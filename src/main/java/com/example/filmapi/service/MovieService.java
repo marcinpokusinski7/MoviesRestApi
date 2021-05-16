@@ -38,10 +38,13 @@ public class MovieService {
     }
 
     public ResponseEntity<?> giveLike(@RequestBody Movie movieLike, @PathVariable Integer id) {
-        int likeCount = movieLike.getLikes();
-        movieLike.setLikes(likeCount + 1);
-        movieRepository.save(movieLike);
-        return ResponseEntity.ok("Like added");
+        try {
+            int likeCount = movieLike.getLikes();
+            movieLike.setLikes(likeCount + 1);
+            movieRepository.save(movieLike);
+            return ResponseEntity.ok("Like added");
+        } catch (MovieNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
-
 }
