@@ -4,6 +4,7 @@ import com.example.filmapi.model.Movie;
 import com.example.filmapi.service.MovieService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,11 +26,22 @@ public class MovieController {
     }
 
     @PostMapping("/filmy")
-    public Movie addMovie(@RequestBody Movie newMovie){
+    public Movie addMovie(@RequestBody Movie newMovie) {
         return movieService.addMovie(newMovie);
     }
+
     @PutMapping("/filmy")
-    public Movie editMovie(@RequestBody Movie movie){
+    public Movie editMovie(@RequestBody Movie movie) {
         return movieService.edit(movie);
+    }
+
+    @PatchMapping("/film/{id}/like")
+    public ResponseEntity<?> addLike(@RequestBody Movie movieLike, @PathVariable Integer id) {
+        try {
+            movieService.giveLike(movieLike, id);
+            return ResponseEntity.ok("Like added");
+        } catch (MovieNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

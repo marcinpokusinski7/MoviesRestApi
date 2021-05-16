@@ -6,6 +6,7 @@ import com.example.filmapi.repository.MovieRepository;
 import com.example.filmapi.repository.ReviewRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +37,11 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
+    public ResponseEntity<?> giveLike(@RequestBody Movie movieLike, @PathVariable Integer id) {
+        int likeCount = movieLike.getLikes();
+        movieLike.setLikes(likeCount + 1);
+        movieRepository.save(movieLike);
+        return ResponseEntity.ok("Like added");
+    }
 
 }
